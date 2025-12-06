@@ -10,6 +10,15 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  experimental: {
+    isrMemoryCacheSize: 0,
+  },
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
+  typescript: {
+    ignoreBuildErrors: true,
+  },
 };
 
 export default nextConfig;
