@@ -84,14 +84,13 @@ export default function Home() {
   ];
 
   const categories = [
-    { title: 'Men', href: '/shop?category=men', image: '/images/categories/category-1.jpg' },
-    { title: 'Kids', href: '/shop?category=kids', image: '/images/categories/category-2.jpg' },
-    { title: 'Pants', href: '/shop?category=pants', image: '/images/categories/category-3.jpg' },
-    { title: 'Men', href: '/shop?category=men', image: '/images/categories/category-1.jpg' },
-    { title: 'Women', href: '/shop?category=women', image: '/images/categories/category-4.jpg' },
-    { title: 'Jeans', href: '/shop?category=jeans', image: '/images/categories/category-5.jpg' },
-    { title: 'Sweater', href: '/shop?category=sweater', image: '/images/categories/category-6.jpg' },
-    { title: 'Shoes', href: '/shop?category=shoes', image: '/images/categories/category-7.jpg' },
+    { id: '1', title: 'Men', href: '/shop?category=men', image: '/images/categories/category-1.jpg' },
+    { id: '2', title: 'Kids', href: '/shop?category=kids', image: '/images/categories/category-2.jpg' },
+    { id: '3', title: 'Pants', href: '/shop?category=pants', image: '/images/categories/category-3.jpg' },
+    { id: '4', title: 'Women', href: '/shop?category=women', image: '/images/categories/category-4.jpg' },
+    { id: '5', title: 'Jeans', href: '/shop?category=jeans', image: '/images/categories/category-5.jpg' },
+    { id: '6', title: 'Sweater', href: '/shop?category=sweater', image: '/images/categories/category-6.jpg' },
+    { id: '7', title: 'Shoes', href: '/shop?category=shoes', image: '/images/categories/category-7.jpg' },
   ];
 
   const mostSellingProducts = [
@@ -173,7 +172,7 @@ export default function Home() {
           <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-4 md:gap-6">
             {categories.map((category) => (
               <CategoryCard
-                key={`${category.title}-${category.href}`}
+                key={category.id}
                 title={category.title}
                 href={category.href}
                 image={category.image}
