@@ -42,6 +42,16 @@ app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 // Request Logging
 app.use(requestLogger);
 
+// Root health check for Render
+app.get('/health', (req, res) => {
+  res.status(200).json({
+    status: 'ok',
+    timestamp: new Date().toISOString(),
+    uptime: process.uptime(),
+    environment: process.env.NODE_ENV || 'development',
+  });
+});
+
 // API Routes
 app.use('/api', routes);
 
