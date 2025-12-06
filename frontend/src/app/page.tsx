@@ -171,9 +171,9 @@ export default function Home() {
       <section className="py-16 md:py-20 bg-background">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-4 md:gap-6">
-            {categories.map((category, index) => (
+            {categories.map((category) => (
               <CategoryCard
-                key={index}
+                key={`${category.title}-${category.href}`}
                 title={category.title}
                 href={category.href}
                 image={category.image}
@@ -257,7 +257,7 @@ export default function Home() {
             <div className="flex justify-center gap-2 mt-8">
               {featuredProducts.slice(0, Math.ceil(featuredProducts.length / 4)).map((_, index) => (
                 <button
-                  key={index}
+                  key={`pagination-${index}`}
                   className="w-2 h-2 rounded-full bg-accent-rose-subtle hover:bg-accent-rose transition-all"
                   aria-label={`Go to slide ${index + 1}`}
                 />
@@ -375,7 +375,7 @@ export default function Home() {
                     <div className="flex gap-0.5 shrink-0">
                         {[...Array(5)].map((_, i) => (
                           <Star
-                            key={i}
+                            key={`star-${product.id}-${i}`}
                             className={`h-3 w-3 md:h-3.5 md:w-3.5 ${
                               i < (product.rating || 0)
                                 ? 'fill-accent-rose text-accent-rose'
@@ -475,7 +475,7 @@ export default function Home() {
               className="!pb-4"
             >
               {featuredProducts.map((product) => (
-                <SwiperSlide key={product.id}>
+                <SwiperSlide key={`flash-sale-${product.id}`}>
                   <Card className="bg-white/10 backdrop-blur-md border-white/20 hover:bg-white/20 hover:border-white/30 transition-all overflow-visible group shadow-lg">
                     <Link href={`/shop/${product.id}`}>
                       <div className="relative h-[200px] md:h-[220px] overflow-visible p-3">
