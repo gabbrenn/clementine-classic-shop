@@ -8,8 +8,8 @@
     "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
     "build:backend": "cd backend && npm run build",
     "build:frontend": "cd frontend && npm run build",
-    "build": "npm run install:all && npm run build:backend && npm run build:frontend",
-    "start": "cd backend && npm start",
+    "build": "npm run install:all && npm run build:frontend && npm run build:backend",
+    "start": "cd backend && NODE_ENV=production npm start",
     "install:all": "npm install && cd backend && npm install && cd ../frontend && npm install"
   },
   "keywords": ["ecommerce", "fashion"],

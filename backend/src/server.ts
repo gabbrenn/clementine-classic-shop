@@ -47,17 +47,36 @@ app.use('/api', routes);
 
 // Serve Next.js frontend in production
 if (isProduction) {
-  const frontendPath = path.join(__dirname, '../../frontend/out');
-  app.use(express.static(frontendPath));
+  const frontendPath = path.join(__dirname, '../../frontend/.next/standalone');
+  const frontendPublicPath = path.join(__dirname, '../../frontend/public');
+  const frontendStaticPath = path.join(__dirname, '../../frontend/.next/static');
   
-  app.get('*', (req, res) => {
-    res.sendFile(path.join(frontendPath, 'index.html'));
+  // Serve static files
+  app.use('/public', express.static(frontendPublicPath));
+  app.use('/_next/static', express.static(frontendStaticPath));
+  
+  // Proxy all other requests to Next.js
+  const { createServer } = require('http');
+  const { parse } = require('url');
+  const next = require('next');
+  
+  const nextApp = next({
+    dev: false,
+    dir: path.join(__dirname, '../../frontend'),
   });
+  const handle = nextApp.getRequestHandler();
+  
+  nextApp.prepare().then(() => {
+    app.get('*', (req, res) => {
+      const parsedUrl = parse(req.url, true);
+      handle(req, res, parsedUrl);
+    });
+  });
+} else {
+  // Error Handling for development
+  app.use(notFound);
+  app.use(errorHandler);
 }
-
-// Error Handling
-app.use(notFound);
-app.use(errorHandler);
 
 app.listen(PORT, () => {
   logger.info(`🚀 Server is running on port ${PORT}`);
