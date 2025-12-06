@@ -3,13 +3,19 @@
 import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { ShoppingBag, Search, User, Heart, Menu, X } from 'lucide-react';
+import { ShoppingBag, User, Heart, Menu, X, Search } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
+import { useCartStore } from '@/store/useCartStore';
+import { useAuthStore } from '@/store/useAuthStore';
+import { SearchDialog } from '@/components/SearchDialog';
 
 export function Navbar() {
   const [isScrolled, setIsScrolled] = React.useState(false);
+  const [searchOpen, setSearchOpen] = React.useState(false);
+  const items = useCartStore((state) => state.items);
+  const { isAuthenticated } = useAuthStore();
+  const cartItemCount = items.reduce((total, item) => total + item.quantity, 0);
 
   React.useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 20);
@@ -40,50 +46,81 @@ export function Navbar() {
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-8">
+          <div className="hidden md:flex items-center space-x-8 absolute left-1/2 -translate-x-1/2">
+            <Link
+              href="/"
+              className="text-sm font-medium hover:text-accent-rose transition-luxury"
+            >
+              HOME
+            </Link>
             <Link
               href="/shop"
               className="text-sm font-medium hover:text-accent-rose transition-luxury"
             >
-              Shop
+              SHOP
             </Link>
             <Link
               href="/collections"
               className="text-sm font-medium hover:text-accent-rose transition-luxury"
             >
-              Collections
+              WOMEN
             </Link>
             <Link
-              href="/new"
+              href="/shop"
               className="text-sm font-medium hover:text-accent-rose transition-luxury"
             >
-              New Arrivals
+              MEN
+            </Link>
+            <Link
+              href="/shop"
+              className="text-sm font-medium hover:text-accent-rose transition-luxury"
+            >
+              KIDS
+            </Link>
+            <Link
+              href="/contact"
+              className="text-sm font-medium hover:text-accent-rose transition-luxury"
+            >
+              CONTACT US
             </Link>
             <Link
               href="/about"
               className="text-sm font-medium hover:text-accent-rose transition-luxury"
             >
-              About
+              ABOUT
             </Link>
           </div>
 
           {/* Actions */}
-          <div className="flex items-center space-x-4">
-            <Button variant="ghost" size="icon" className="hidden md:flex">
+          <div className="flex items-center space-x-4 ml-auto">
+            <Button 
+              variant="ghost" 
+              size="icon"
+              onClick={() => setSearchOpen(true)}
+              className="hidden md:flex"
+            >
               <Search className="h-5 w-5" />
             </Button>
-            <Button variant="ghost" size="icon">
-              <User className="h-5 w-5" />
-            </Button>
-            <Button variant="ghost" size="icon">
-              <Heart className="h-5 w-5" />
-            </Button>
-            <Button variant="ghost" size="icon" className="relative">
-              <ShoppingBag className="h-5 w-5" />
-              <span className="absolute -top-1 -right-1 h-5 w-5 rounded-full bg-accent-rose text-white text-xs flex items-center justify-center">
-                3
-              </span>
-            </Button>
+            <Link href={isAuthenticated ? '/account' : '/login'}>
+              <Button variant="ghost" size="icon">
+                <User className="h-5 w-5" />
+              </Button>
+            </Link>
+            <Link href="/account/wishlist">
+              <Button variant="ghost" size="icon">
+                <Heart className="h-5 w-5" />
+              </Button>
+            </Link>
+            <Link href="/cart">
+              <Button variant="ghost" size="icon" className="relative">
+                <ShoppingBag className="h-5 w-5" />
+                {cartItemCount > 0 && (
+                  <span className="absolute -top-1 -right-1 h-5 w-5 rounded-full bg-accent-rose text-white text-xs flex items-center justify-center">
+                    {cartItemCount}
+                  </span>
+                )}
+              </Button>
+            </Link>
 
             {/* Mobile Menu */}
             <Sheet>
@@ -93,28 +130,32 @@ export function Navbar() {
                 </Button>
               </SheetTrigger>
               <SheetContent side="right" className="w-[320px] sm:w-[380px]">
-                {/* Header */}
-                <div className="flex items-center justify-between pb-6 border-b border-border/50">
-                  <Link href="/" className="flex-shrink-0 relative h-10 w-40 hover:opacity-80 transition-opacity">
-                    <Image
-                      src="/images/logo/logo.png"
-                      alt="Clementine Classic Shop"
-                      fill
-                      className="object-contain object-left"
-                      sizes="160px"
-                    />
-                  </Link>
-                </div>
+                <SheetHeader className="border-b border-border/50 pb-6">
+                  <SheetTitle className="text-left">
+                    <Link href="/" className="inline-block relative h-10 w-40 hover:opacity-80 transition-opacity">
+                      <Image
+                        src="/images/logo/logo.png"
+                        alt="Clementine Classic Shop"
+                        fill
+                        className="object-contain object-left"
+                        sizes="160px"
+                      />
+                    </Link>
+                  </SheetTitle>
+                </SheetHeader>
 
-                {/* Search Bar */}
+                {/* Search Button */}
                 <div className="py-6">
-                  <div className="relative">
-                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                    <Input 
-                      placeholder="Search products..." 
-                      className="pl-10 bg-accent-rose-subtle/20 border-accent-rose-muted/30 focus:border-accent-rose"
-                    />
-                  </div>
+                  <Button 
+                    variant="outline" 
+                    className="w-full justify-start gap-3"
+                    onClick={() => {
+                      setSearchOpen(true);
+                    }}
+                  >
+                    <Search className="h-4 w-4" />
+                    <span>Search products...</span>
+                  </Button>
                 </div>
 
                 {/* Navigation Links */}
@@ -134,10 +175,10 @@ export function Navbar() {
                     <span className="text-accent-rose opacity-0 group-hover:opacity-100 transition-opacity">→</span>
                   </Link>
                   <Link
-                    href="/new"
+                    href="/contact"
                     className="group flex items-center justify-between px-4 py-3 rounded-lg hover:bg-accent-rose-subtle/30 transition-all"
                   >
-                    <span className="text-base font-medium">New Arrivals</span>
+                    <span className="text-base font-medium">Contact Us</span>
                     <span className="text-accent-rose opacity-0 group-hover:opacity-100 transition-opacity">→</span>
                   </Link>
                   <Link
@@ -182,16 +223,21 @@ export function Navbar() {
 
                 {/* Bottom CTA */}
                 <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-background via-background to-transparent">
-                  <Button className="w-full bg-accent-rose hover:bg-accent-rose-dark text-white shadow-lg">
-                    <ShoppingBag className="mr-2 h-4 w-4" />
-                    View Cart (3)
-                  </Button>
+                  <Link href="/cart">
+                    <Button className="w-full bg-accent-rose hover:bg-accent-rose-dark text-white shadow-lg">
+                      <ShoppingBag className="mr-2 h-4 w-4" />
+                      View Cart ({cartItemCount})
+                    </Button>
+                  </Link>
                 </div>
               </SheetContent>
             </Sheet>
           </div>
         </div>
       </div>
+
+      {/* Search Dialog */}
+      <SearchDialog open={searchOpen} onOpenChange={setSearchOpen} />
     </nav>
   );
 }

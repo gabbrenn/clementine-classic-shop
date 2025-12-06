@@ -44,7 +44,7 @@ export function Footer() {
             <ul className="space-y-2">
               <li>
                 <Link
-                  href="/shop/women"
+                  href="/shop"
                   className="text-sm text-muted-foreground hover:text-accent-rose transition-luxury"
                 >
                   Women
@@ -52,7 +52,7 @@ export function Footer() {
               </li>
               <li>
                 <Link
-                  href="/shop/men"
+                  href="/shop"
                   className="text-sm text-muted-foreground hover:text-accent-rose transition-luxury"
                 >
                   Men
@@ -60,18 +60,10 @@ export function Footer() {
               </li>
               <li>
                 <Link
-                  href="/shop/accessories"
+                  href="/shop"
                   className="text-sm text-muted-foreground hover:text-accent-rose transition-luxury"
                 >
-                  Accessories
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/shop/sale"
-                  className="text-sm text-muted-foreground hover:text-accent-rose transition-luxury"
-                >
-                  Sale
+                  Kids
                 </Link>
               </li>
             </ul>
