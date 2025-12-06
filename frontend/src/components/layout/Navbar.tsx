@@ -60,7 +60,7 @@ export function Navbar() {
               SHOP
             </Link>
             <Link
-              href="/collections"
+              href="/shop"
               className="text-sm font-medium hover:text-accent-rose transition-luxury"
             >
               WOMEN
