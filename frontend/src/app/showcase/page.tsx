@@ -1,9 +1,11 @@
+'use client';
+
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Skeleton } from '@/components/ui/skeleton';
-import { ShoppingBag, Search, User, Heart, Menu } from 'lucide-react';
+import { Search, Heart } from 'lucide-react';
 
 export default function ComponentShowcase() {
   return (

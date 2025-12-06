@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { ArrowRight, Star } from 'lucide-react';
@@ -20,10 +21,13 @@ import 'swiper/css';
 import 'swiper/css/autoplay';
 
 export default function Home() {
-  // Calculate target date for countdown (15 days from now)
-  const flashSaleEndDate = new Date();
-  flashSaleEndDate.setDate(flashSaleEndDate.getDate() + 15);
-  flashSaleEndDate.setHours(23, 36, 55, 0);
+  // Calculate target date for countdown (15 days from now) - client-side only
+  const [flashSaleEndDate] = useState(() => {
+    const date = new Date();
+    date.setDate(date.getDate() + 15);
+    date.setHours(23, 36, 55, 0);
+    return date;
+  });
 
   // Sample product data
   const featuredProducts = [
@@ -243,7 +247,7 @@ export default function Home() {
               className="!pb-12"
             >
               {featuredProducts.map((product) => (
-                <SwiperSlide key={product.id}>
+                <SwiperSlide key={`featured-${product.id}`}>
                   <ProductCard
                     {...product}
                     href={`/shop/${product.id}`}
