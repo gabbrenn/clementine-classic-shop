@@ -29,7 +29,7 @@ const defaultSlides: HeroSlide[] = [
     description: 'Starting From',
     ctaText: 'SHOP NOW',
     ctaLink: '/shop',
-    image: 'https://images.unsplash.com/photo-1490481651871-ab68de25d43d?q=80&w=2070&auto=format&fit=crop',
+    image: '/new-images/hero-1.jpg',
     gradient: 'from-accent-rose-subtle via-accent-rose-muted to-accent-rose-subtle',
   },
   {
@@ -38,7 +38,7 @@ const defaultSlides: HeroSlide[] = [
     description: 'Starting From',
     ctaText: 'EXPLORE COLLECTION',
     ctaLink: '/shop',
-    image: 'https://images.unsplash.com/photo-1483985988355-763728e1935b?q=80&w=2070&auto=format&fit=crop',
+    image: '/new-images/hero-2.jpg',
     gradient: 'from-purple-100 via-pink-100 to-rose-100',
   },
   {
@@ -47,7 +47,7 @@ const defaultSlides: HeroSlide[] = [
     description: 'Starting From',
     ctaText: 'DISCOVER MORE',
     ctaLink: '/shop',
-    image: 'https://images.unsplash.com/photo-1469334031218-e382a71b716b?q=80&w=2070&auto=format&fit=crop',
+    image: '/new-images/hero-3.jpg',
     gradient: 'from-blue-100 via-indigo-100 to-purple-100',
   },
 ];
@@ -57,6 +57,8 @@ export function HeroBanner({ slides = defaultSlides, autoPlayInterval = 5000 }: 
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
   const [direction, setDirection] = useState(0);
   const [slideCount, setSlideCount] = useState(0);
+  const [typedText, setTypedText] = useState('');
+  const [showCursor, setShowCursor] = useState(true);
 
   const nextSlide = useCallback(() => {
     setDirection(1);
@@ -87,6 +89,32 @@ export function HeroBanner({ slides = defaultSlides, autoPlayInterval = 5000 }: 
   }, [isAutoPlaying, autoPlayInterval, nextSlide, slides.length]);
 
   const currentSlide = slides[currentIndex];
+
+  // Typing animation effect
+  useEffect(() => {
+    setTypedText('');
+    setShowCursor(true);
+    let currentCharIndex = 0;
+    
+    const typingInterval = setInterval(() => {
+      if (currentCharIndex < currentSlide.title.length) {
+        setTypedText(currentSlide.title.slice(0, currentCharIndex + 1));
+        currentCharIndex++;
+      } else {
+        clearInterval(typingInterval);
+      }
+    }, 50); // Typing speed
+
+    return () => clearInterval(typingInterval);
+  }, [currentIndex, currentSlide.title]);
+
+  // Cursor blinking effect
+  useEffect(() => {
+    const cursorInterval = setInterval(() => {
+      setShowCursor((prev) => !prev);
+    }, 530);
+    return () => clearInterval(cursorInterval);
+  }, []);
 
   const imageVariants = {
     enter: (direction: number) => ({
@@ -176,9 +204,14 @@ export function HeroBanner({ slides = defaultSlides, autoPlayInterval = 5000 }: 
                     {currentSlide.subtitle}
                   </div>
 
-                  {/* Title */}
-                  <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-serif leading-tight text-white drop-shadow-lg">
-                    {currentSlide.title}
+                  {/* Title with Typing Animation */}
+                  <h1 className="text-2xl md:text-3xl lg:text-4xl font-semibold tracking-tight leading-tight drop-shadow-2xl">
+                    <span className="bg-gradient-to-r from-amber-200 via-rose-200 via-pink-200 to-amber-200 bg-clip-text text-transparent animate-gradient bg-[length:200%_auto]">
+                      {typedText}
+                      {showCursor && (
+                        <span className="inline-block w-0.5 h-full bg-gradient-to-b from-amber-300 to-rose-400 ml-1 animate-pulse">|</span>
+                      )}
+                    </span>
                   </h1>
 
                 
@@ -199,25 +232,26 @@ export function HeroBanner({ slides = defaultSlides, autoPlayInterval = 5000 }: 
               </AnimatePresence>
             </div>
 
-            {/* Navigation Arrows - Inside main slide */}
+            {/* Navigation Arrows - Right Side Vertical (iPhone 11 Style) */}
             {slides.length > 1 && (
-                <>
-                  <button
-                    onClick={prevSlide}
-                    className="absolute left-4 top-1/2 -translate-y-1/2 z-20 bg-white/20 backdrop-blur-md hover:bg-white/30 p-3 rounded-full border border-white/30 transition-all hover:scale-110"
-                    aria-label="Previous slide"
-                  >
-                    <ChevronLeft className="h-6 w-6 text-white" />
-                  </button>
-                  <button
-                    onClick={nextSlide}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 z-20 bg-white/20 backdrop-blur-md hover:bg-white/30 p-3 rounded-full border border-white/30 transition-all hover:scale-110"
-                    aria-label="Next slide"
-                  >
-                    <ChevronRight className="h-6 w-6 text-white" />
-                  </button>
-                </>
-              )}
+              <div className="absolute right-0 top-1/2 -translate-y-1/2 z-20 flex flex-col gap-2 bg-background/80 backdrop-blur-sm rounded-tl-3xl rounded-bl-3xl p-2 shadow-lg">
+                <button
+                  onClick={prevSlide}
+                  className="p-2 hover:bg-accent-rose-subtle rounded-lg transition-all hover:scale-110 active:scale-95"
+                  aria-label="Previous slide"
+                >
+                  <ChevronLeft className="h-5 w-5 text-foreground" />
+                </button>
+                <div className="h-px bg-border mx-1"></div>
+                <button
+                  onClick={nextSlide}
+                  className="p-2 hover:bg-accent-rose-subtle rounded-lg transition-all hover:scale-110 active:scale-95"
+                  aria-label="Next slide"
+                >
+                  <ChevronRight className="h-5 w-5 text-foreground" />
+                </button>
+              </div>
+            )}
 
               {/* Bottom Controls - Inside main slide */}
               {slides.length > 1 && (

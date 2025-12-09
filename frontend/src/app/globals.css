@@ -236,4 +236,18 @@
   .transition-luxury {
     @apply transition-all duration-300 ease-in-out;
   }
+  
+  /* Gradient animation */
+  @keyframes gradient {
+    0%, 100% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+  }
+  
+  .animate-gradient {
+    animation: gradient 3s ease infinite;
+  }
 }

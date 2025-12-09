@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Outfit, Inter } from "next/font/google";
+import { Toaster } from "sonner";
 import "./globals.css";
 
 export const dynamic = "force-dynamic";
@@ -35,6 +36,7 @@ export default function RootLayout({
         className={`${outfit.variable} ${inter.variable} font-sans antialiased`}
       >
         {children}
+        <Toaster position="top-right" richColors />
       </body>
     </html>
   );

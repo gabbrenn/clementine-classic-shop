@@ -15,6 +15,7 @@ model User {
   id            String    @id @default(cuid())
   email         String    @unique
   password      String
+  name          String?
   firstName     String?
   lastName      String?
   phone         String?
@@ -32,12 +33,29 @@ model User {
   cartItems     CartItem[]
   wishlist      WishlistItem[]
   couponsUsed   CouponUsage[]
+  refreshTokens RefreshToken[]
 }
 
 enum UserRole {
   CUSTOMER
   ADMIN
   SUPER_ADMIN
+}
+
+// Refresh Token Model for JWT token management
+model RefreshToken {
+  id          String   @id @default(cuid())
+  token       String   @unique
+  userId      String
+  expiresAt   DateTime
+  isRevoked   Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@index([userId])
+  @@index([token])
 }
 
 // Address Model
@@ -57,7 +75,6 @@ model Address {
   updatedAt     DateTime @updatedAt
   
   user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  orders        Order[]
 }
 
 // Category Model
@@ -83,13 +100,15 @@ model Product {
   slug          String    @unique
   description   String
   price         Float
+  salePrice     Float?
   comparePrice  Float?
   sku           String    @unique
   categoryId    String
+  imageUrl      String?
   images        String[]
   sizes         String[]
   colors        String[]
-  stock         Int       @default(0)
+  stockQuantity Int       @default(0)
   isActive      Boolean   @default(true)
   isFeatured    Boolean   @default(false)
   tags          String[]
@@ -108,10 +127,12 @@ model Product {
 model Cart {
   id          String     @id @default(cuid())
   userId      String     @unique
+  couponId    String?
   createdAt   DateTime   @default(now())
   updatedAt   DateTime   @updatedAt
   
   user        User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  coupon      Coupon?    @relation(fields: [couponId], references: [id])
   items       CartItem[]
 }
 
@@ -152,25 +173,33 @@ model Order {
   id              String        @id @default(cuid())
   orderNumber     String        @unique
   userId          String
-  addressId       String
   couponId        String?
   status          OrderStatus   @default(PENDING)
   subtotal        Float
   discount        Float         @default(0)
-  shipping        Float
+  shippingCost    Float
   tax             Float
   total           Float
-  paymentMethod   String
+  paymentMethod   PaymentMethod
   paymentStatus   PaymentStatus @default(PENDING)
   paymentIntentId String?
+  shippingAddress Json
   notes           String?
   createdAt       DateTime      @default(now())
   updatedAt       DateTime      @updatedAt
   
   user            User          @relation(fields: [userId], references: [id])
-  address         Address       @relation(fields: [addressId], references: [id])
   coupon          Coupon?       @relation(fields: [couponId], references: [id])
   items           OrderItem[]
+}
+
+enum PaymentMethod {
+  CREDIT_CARD
+  DEBIT_CARD
+  PAYPAL
+  BANK_TRANSFER
+  MOBILE_MONEY
+  CASH_ON_DELIVERY
 }
 
 enum OrderStatus {
@@ -194,6 +223,7 @@ model OrderItem {
   id          String   @id @default(cuid())
   orderId     String
   productId   String
+  productName String
   quantity    Int
   price       Float
   size        String?
@@ -225,23 +255,25 @@ model Review {
 
 // Coupon Model
 model Coupon {
-  id              String          @id @default(cuid())
-  code            String          @unique
-  description     String?
-  discountType    DiscountType
-  discountValue   Float
-  minPurchase     Float?
-  maxDiscount     Float?
-  usageLimit      Int?
-  usedCount       Int             @default(0)
-  startDate       DateTime
-  endDate         DateTime
-  isActive        Boolean         @default(true)
-  createdAt       DateTime        @default(now())
-  updatedAt       DateTime        @updatedAt
+  id                 String          @id @default(cuid())
+  code               String          @unique
+  description        String?
+  discountType       DiscountType
+  discountValue      Float
+  minPurchaseAmount  Float?
+  maxDiscountAmount  Float?
+  usageLimit         Int?
+  perUserLimit       Int?
+  usedCount          Int             @default(0)
+  validFrom          DateTime?
+  validUntil         DateTime?
+  isActive           Boolean         @default(true)
+  createdAt          DateTime        @default(now())
+  updatedAt          DateTime        @updatedAt
   
-  orders          Order[]
-  usages          CouponUsage[]
+  carts              Cart[]
+  orders             Order[]
+  usages             CouponUsage[]
 }
 
 enum DiscountType {
@@ -255,6 +287,7 @@ model CouponUsage {
   id          String   @id @default(cuid())
   couponId    String
   userId      String
+  orderId     String?
   usedAt      DateTime @default(now())
   
   coupon      Coupon   @relation(fields: [couponId], references: [id], onDelete: Cascade)
@@ -265,22 +298,20 @@ model CouponUsage {
 
 // Inventory Log Model
 model InventoryLog {
-  id          String         @id @default(cuid())
+  id          String            @id @default(cuid())
   productId   String
-  type        InventoryType
+  type        InventoryLogType
   quantity    Int
   reason      String?
-  previousQty Int
-  newQty      Int
   createdBy   String?
-  createdAt   DateTime       @default(now())
+  createdAt   DateTime          @default(now())
   
-  product     Product        @relation(fields: [productId], references: [id], onDelete: Cascade)
+  product     Product           @relation(fields: [productId], references: [id], onDelete: Cascade)
   
   @@index([productId, createdAt])
 }
 
-enum InventoryType {
+enum InventoryLogType {
   RESTOCK
   SALE
   RETURN

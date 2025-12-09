@@ -25,16 +25,52 @@ export default function ShopPage() {
   const [sortBy, setSortBy] = useState('featured');
   const [currentPage, setCurrentPage] = useState(1);
 
-  // Mock product data
-  const products = Array.from({ length: 12 }, (_, i) => ({
-    id: `${i + 1}`,
-    title: `Premium Product ${i + 1}`,
-    category: i % 2 === 0 ? "Women's Collection" : "Men's Collection",
-    price: `Rwf ${(98 + i * 10) * 1000}`,
-    originalPrice: `Rwf ${(129 + i * 10) * 1000}`,
-    discount: '24%',
-    image: '/images/products/product-img-1.jpg',
-  }));
+  // Product data organized by categories
+  const bagProducts = [
+    { id: 'bag-1', title: 'Elegant Leather Handbag', category: 'Handbag', price: 'Rwf 159,000', originalPrice: 'Rwf 199,000', discount: '20%', image: '/new-images/bag/bag-1.jpg' },
+    { id: 'bag-2', title: 'Designer Tote Bag', category: 'Handbag', price: 'Rwf 179,000', originalPrice: 'Rwf 229,000', discount: '22%', image: '/new-images/bag/bag-2.jpg' },
+    { id: 'bag-3', title: 'Luxury Crossbody Bag', category: 'Handbag', price: 'Rwf 139,000', originalPrice: 'Rwf 179,000', discount: '22%', image: '/new-images/bag/bag-3.jpg' },
+    { id: 'bag-4', title: 'Premium Shoulder Bag', category: 'Handbag', price: 'Rwf 169,000', originalPrice: 'Rwf 219,000', discount: '23%', image: '/new-images/bag/bag-4.jpg' },
+    { id: 'bag-5', title: 'Stylish Clutch Bag', category: 'Handbag', price: 'Rwf 119,000', originalPrice: 'Rwf 149,000', discount: '20%', image: '/new-images/bag/bag-5.jpg' },
+  ];
+
+  const dressProducts = [
+    { id: 'dress-1', title: 'Elegant Evening Gown', category: "Women's Dress", price: 'Rwf 249,000', originalPrice: 'Rwf 329,000', discount: '24%', image: '/new-images/dress/dress-1.jpg' },
+    { id: 'dress-2', title: 'Classic A-Line Dress', category: "Women's Dress", price: 'Rwf 189,000', originalPrice: 'Rwf 249,000', discount: '24%', image: '/new-images/dress/dress-2.jpg' },
+    { id: 'dress-3', title: 'Designer Cocktail Dress', category: "Women's Dress", price: 'Rwf 279,000', originalPrice: 'Rwf 359,000', discount: '22%', image: '/new-images/dress/dress-3.jpg' },
+    { id: 'dress-4', title: 'Elegant Maxi Dress', category: "Women's Dress", price: 'Rwf 219,000', originalPrice: 'Rwf 289,000', discount: '24%', image: '/new-images/dress/dress-4.jpg' },
+    { id: 'dress-5', title: 'Chic Midi Dress', category: "Women's Dress", price: 'Rwf 199,000', originalPrice: 'Rwf 259,000', discount: '23%', image: '/new-images/dress/dress-5.jpg' },
+    { id: 'dress-6', title: 'Luxury Ball Gown', category: "Women's Dress", price: 'Rwf 349,000', originalPrice: 'Rwf 449,000', discount: '22%', image: '/new-images/dress/dress-6.jpg' },
+    { id: 'dress-7', title: 'Stylish Casual Dress', category: "Women's Dress", price: 'Rwf 169,000', originalPrice: 'Rwf 219,000', discount: '23%', image: '/new-images/dress/dress-7.jpg' },
+    { id: 'dress-8', title: 'Formal Business Dress', category: "Women's Dress", price: 'Rwf 229,000', originalPrice: 'Rwf 299,000', discount: '23%', image: '/new-images/dress/dress-8.jpg' },
+    { id: 'dress-9', title: 'Elegant Wrap Dress', category: "Women's Dress", price: 'Rwf 209,000', originalPrice: 'Rwf 269,000', discount: '22%', image: '/new-images/dress/dress-9.jpg' },
+    { id: 'dress-10', title: 'Designer Party Dress', category: "Women's Dress", price: 'Rwf 269,000', originalPrice: 'Rwf 349,000', discount: '23%', image: '/new-images/dress/dress-10.jpg' },
+    { id: 'dress-11', title: 'Chic Bodycon Dress', category: "Women's Dress", price: 'Rwf 189,000', originalPrice: 'Rwf 249,000', discount: '24%', image: '/new-images/dress/dress-11.jpg' },
+    { id: 'dress-12', title: 'Elegant Floral Dress', category: "Women's Dress", price: 'Rwf 219,000', originalPrice: 'Rwf 289,000', discount: '24%', image: '/new-images/dress/dress-12.jpg' },
+  ];
+
+  const shoeProducts = [
+    { id: 'shoe-1', title: 'Premium Leather Heels', category: "Women's Shoes", price: 'Rwf 189,000', originalPrice: 'Rwf 249,000', discount: '24%', image: '/new-images/Shoes/shoe-1.jpg' },
+    { id: 'shoe-2', title: 'Designer High Heels', category: "Women's Shoes", price: 'Rwf 219,000', originalPrice: 'Rwf 289,000', discount: '24%', image: '/new-images/Shoes/shoe-2.jpg' },
+    { id: 'shoe-3', title: 'Elegant Stiletto Heels', category: "Women's Shoes", price: 'Rwf 199,000', originalPrice: 'Rwf 259,000', discount: '23%', image: '/new-images/Shoes/shoe-3.jpg' },
+    { id: 'shoe-4', title: 'Luxury Platform Heels', category: "Women's Shoes", price: 'Rwf 229,000', originalPrice: 'Rwf 299,000', discount: '23%', image: '/new-images/Shoes/shoe-4.jpg' },
+    { id: 'shoe-5', title: 'Chic Ankle Boots', category: "Women's Shoes", price: 'Rwf 249,000', originalPrice: 'Rwf 329,000', discount: '24%', image: '/new-images/Shoes/shoe-5.jpg' },
+    { id: 'shoe-6', title: 'Designer Pumps', category: "Women's Shoes", price: 'Rwf 179,000', originalPrice: 'Rwf 239,000', discount: '25%', image: '/new-images/Shoes/shoe-6.jpg' },
+    { id: 'shoe-7', title: 'Elegant Wedge Heels', category: "Women's Shoes", price: 'Rwf 209,000', originalPrice: 'Rwf 269,000', discount: '22%', image: '/new-images/Shoes/shoe-7.jpg' },
+    { id: 'shoe-8', title: 'Stylish Sandals', category: "Women's Shoes", price: 'Rwf 159,000', originalPrice: 'Rwf 199,000', discount: '20%', image: '/new-images/Shoes/shoe-8.jpg' },
+    { id: 'shoe-9', title: 'Luxury Court Shoes', category: "Women's Shoes", price: 'Rwf 189,000', originalPrice: 'Rwf 249,000', discount: '24%', image: '/new-images/Shoes/shoe-9.jpg' },
+    { id: 'shoe-10', title: 'Premium Block Heels', category: "Women's Shoes", price: 'Rwf 199,000', originalPrice: 'Rwf 259,000', discount: '23%', image: '/new-images/Shoes/shoe-10.jpg' },
+    { id: 'shoe-11', title: 'Designer Mules', category: "Women's Shoes", price: 'Rwf 169,000', originalPrice: 'Rwf 219,000', discount: '23%', image: '/new-images/Shoes/shoe-11.jpg' },
+    { id: 'shoe-12', title: 'Elegant Slingback Heels', category: "Women's Shoes", price: 'Rwf 219,000', originalPrice: 'Rwf 289,000', discount: '24%', image: '/new-images/Shoes/shoe-12.jpg' },
+  ];
+
+  const wigProducts = [
+    { id: 'wig-1', title: 'Premium Human Hair Wig', category: 'Wigs', price: 'Rwf 349,000', originalPrice: 'Rwf 449,000', discount: '22%', image: '/new-images/wigs/wig-1.jpg' },
+    { id: 'wig-2', title: 'Luxury Synthetic Wig', category: 'Wigs', price: 'Rwf 229,000', originalPrice: 'Rwf 299,000', discount: '23%', image: '/new-images/wigs/wig-2.jpg' },
+  ];
+
+  // Combine all products
+  const products = [...bagProducts, ...dressProducts, ...shoeProducts, ...wigProducts];
 
   const sizes = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
   const colors = [

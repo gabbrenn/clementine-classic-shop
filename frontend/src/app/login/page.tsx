@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Navbar } from '@/components/layout/Navbar';
 import { Footer } from '@/components/layout/Footer';
 import { Button } from '@/components/ui/button';
@@ -35,10 +35,17 @@ export default function LoginPage() {
     confirmPassword: '',
   });
 
-  if (isAuthenticated) {
-    router.push('/account');
-    return null;
-  }
+  // Redirect if already authenticated
+  useEffect(() => {
+    if (isAuthenticated) {
+      const user = useAuthStore.getState().user;
+      if (user?.role === 'ADMIN' || user?.role === 'SUPER_ADMIN') {
+        router.push('/admin');
+      } else {
+        router.push('/account');
+      }
+    }
+  }, [isAuthenticated, router]);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -47,9 +54,17 @@ export default function LoginPage() {
     try {
       await login(loginData.email, loginData.password);
       toast.success('Welcome back!');
-      router.push('/account');
-    } catch (error) {
-      toast.error('Invalid credentials');
+      
+      // Redirect based on user role
+      const user = useAuthStore.getState().user;
+      if (user?.role === 'ADMIN' || user?.role === 'SUPER_ADMIN') {
+        router.push('/admin');
+      } else {
+        router.push('/account');
+      }
+    } catch (error: any) {
+      const message = error.response?.data?.message || error.message || 'Invalid credentials';
+      toast.error(message);
     } finally {
       setIsLoading(false);
     }
@@ -74,9 +89,17 @@ export default function LoginPage() {
       const { confirmPassword, ...userData } = registerData;
       await register(userData);
       toast.success('Account created successfully!');
-      router.push('/account');
-    } catch (error) {
-      toast.error('Registration failed');
+      
+      // Redirect based on user role (registration always creates CUSTOMER by default)
+      const user = useAuthStore.getState().user;
+      if (user?.role === 'ADMIN' || user?.role === 'SUPER_ADMIN') {
+        router.push('/admin');
+      } else {
+        router.push('/account');
+      }
+    } catch (error: any) {
+      const message = error.response?.data?.message || error.message || 'Registration failed. Please try again.';
+      toast.error(message);
     } finally {
       setIsLoading(false);
     }

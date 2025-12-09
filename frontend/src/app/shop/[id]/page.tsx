@@ -40,50 +40,723 @@ export default function ProductPage({ params }: ProductPageProps) {
   const [quantity, setQuantity] = useState(1);
   const [isWishlisted, setIsWishlisted] = useState(false);
 
-  // Mock product data
-  const product = {
-    id,
-    name: 'Premium Cashmere Sweater',
-    price: 299000,
-    originalPrice: 399000,
-    discount: 25,
-    rating: 4.5,
-    reviewCount: 128,
-    inStock: true,
-    brand: 'Luxury Brand',
-    category: "Women's Collection",
-    description: 'Indulge in unparalleled comfort with our Premium Cashmere Sweater. Crafted from the finest Mongolian cashmere, this piece combines timeless elegance with modern sophistication. The luxurious fabric provides exceptional warmth while maintaining breathability.',
-    features: [
-      '100% Premium Mongolian Cashmere',
-      'Hand-finished seams for durability',
-      'Ribbed crew neckline and cuffs',
-      'Relaxed fit for versatile styling',
-      'Dry clean only',
-    ],
-    images: [
-      '/images/products/product-img-1.jpg',
-      '/images/products/product-img-2.jpg',
-      '/images/products/product-img-3.jpg',
-      '/images/products/product-img-4.jpg',
-    ],
-    sizes: ['XS', 'S', 'M', 'L', 'XL'],
-    colors: [
-      { name: 'Charcoal', hex: '#36454F' },
-      { name: 'Cream', hex: '#FFFDD0' },
-      { name: 'Burgundy', hex: '#800020' },
-      { name: 'Navy', hex: '#000080' },
-    ],
+  // Realistic product data based on ID
+  interface ProductData {
+    name: string;
+    price: number;
+    originalPrice: number;
+    discount: number;
+    rating: number;
+    reviewCount: number;
+    category: string;
+    brand: string;
+    description: string;
+    features: string[];
+    images: string[];
+    sizes: string[];
+    colors: Array<{ name: string; hex: string }>;
+  }
+
+  const getProductData = (productId: string): ProductData => {
+    const productDatabase: Record<string, ProductData> = {
+      // Bags
+      'bag-1': {
+        name: 'Elegant Leather Handbag',
+        price: 159000,
+        originalPrice: 199000,
+        discount: 20,
+        rating: 4.7,
+        reviewCount: 89,
+        category: 'Handbag',
+        brand: 'Clementine Classic',
+        description: 'Crafted from premium genuine leather, this elegant handbag combines sophisticated design with practical functionality. Features a spacious interior with multiple compartments, adjustable shoulder strap, and elegant gold-tone hardware. Perfect for both day and evening wear.',
+        features: [
+          '100% Genuine Leather',
+          'Adjustable shoulder strap',
+          'Multiple interior compartments',
+          'Gold-tone hardware',
+          'Spacious main compartment',
+          'Interior zip pocket',
+        ],
+        images: [
+          '/new-images/bag/bag-1.jpg',
+          '/new-images/bag/bag-2.jpg',
+          '/new-images/bag/bag-3.jpg',
+        ],
+        sizes: ['One Size'],
+        colors: [
+          { name: 'Black', hex: '#000000' },
+          { name: 'Brown', hex: '#8B4513' },
+          { name: 'Burgundy', hex: '#800020' },
+        ],
+      },
+      'bag-2': {
+        name: 'Designer Tote Bag',
+        price: 179000,
+        originalPrice: 229000,
+        discount: 22,
+        rating: 4.6,
+        reviewCount: 124,
+        category: 'Handbag',
+        brand: 'Clementine Classic',
+        description: 'A spacious and stylish tote bag perfect for everyday use. Made from high-quality faux leather with reinforced handles, this bag offers ample space for all your essentials while maintaining a chic, modern aesthetic.',
+        features: [
+          'Premium Faux Leather',
+          'Reinforced handles',
+          'Large main compartment',
+          'Interior pockets',
+          'Stylish design',
+          'Durable construction',
+        ],
+        images: [
+          '/new-images/bag/bag-2.jpg',
+          '/new-images/bag/bag-1.jpg',
+          '/new-images/bag/bag-4.jpg',
+        ],
+        sizes: ['One Size'],
+        colors: [
+          { name: 'Black', hex: '#000000' },
+          { name: 'Beige', hex: '#F5F5DC' },
+          { name: 'Navy', hex: '#000080' },
+        ],
+      },
+      // Dresses
+      'dress-1': {
+        name: 'Elegant Evening Gown',
+        price: 249000,
+        originalPrice: 329000,
+        discount: 24,
+        rating: 4.8,
+        reviewCount: 156,
+        category: "Women's Dress",
+        brand: 'Clementine Classic',
+        description: 'A stunning evening gown designed for special occasions. Featuring elegant draping, luxurious fabric, and a flattering silhouette that enhances your natural curves. Perfect for weddings, galas, and formal events.',
+        features: [
+          'Premium Quality Fabric',
+          'Elegant draping',
+          'Flattering silhouette',
+          'Hidden back zipper',
+          'Lining included',
+          'Dry clean recommended',
+        ],
+        images: [
+          '/new-images/dress/dress-1.jpg',
+          '/new-images/dress/dress-2.jpg',
+          '/new-images/dress/dress-3.jpg',
+          '/new-images/dress/dress-4.jpg',
+        ],
+        sizes: ['XS', 'S', 'M', 'L', 'XL'],
+        colors: [
+          { name: 'Navy', hex: '#000080' },
+          { name: 'Burgundy', hex: '#800020' },
+          { name: 'Black', hex: '#000000' },
+          { name: 'Emerald', hex: '#50C878' },
+        ],
+      },
+      'dress-2': {
+        name: 'Classic A-Line Dress',
+        price: 189000,
+        originalPrice: 249000,
+        discount: 24,
+        rating: 4.5,
+        reviewCount: 203,
+        category: "Women's Dress",
+        brand: 'Clementine Classic',
+        description: 'A timeless A-line dress that never goes out of style. Versatile enough for office wear or casual outings, this dress features a comfortable fit, classic design, and high-quality fabric that moves beautifully.',
+        features: [
+          'Classic A-line silhouette',
+          'Comfortable fit',
+          'Versatile design',
+          'Machine washable',
+          'Breathable fabric',
+          'Timeless style',
+        ],
+        images: [
+          '/new-images/dress/dress-2.jpg',
+          '/new-images/dress/dress-5.jpg',
+          '/new-images/dress/dress-6.jpg',
+        ],
+        sizes: ['XS', 'S', 'M', 'L', 'XL'],
+        colors: [
+          { name: 'Black', hex: '#000000' },
+          { name: 'Navy', hex: '#000080' },
+          { name: 'Red', hex: '#DC2626' },
+          { name: 'Ivory', hex: '#FFFFF0' },
+        ],
+      },
+      // Shoes
+      'shoe-1': {
+        name: 'Premium Leather Heels',
+        price: 189000,
+        originalPrice: 249000,
+        discount: 24,
+        rating: 4.6,
+        reviewCount: 187,
+        category: "Women's Shoes",
+        brand: 'Clementine Classic',
+        description: 'Step into elegance with these premium leather heels. Crafted from genuine leather with a comfortable heel height and cushioned insole, these shoes combine style and comfort perfectly. Perfect for both work and special occasions.',
+        features: [
+          '100% Genuine Leather',
+          'Comfortable heel height',
+          'Cushioned insole',
+          'Non-slip sole',
+          'Elegant design',
+          'Durable construction',
+        ],
+        images: [
+          '/new-images/Shoes/shoe-1.jpg',
+          '/new-images/Shoes/shoe-2.jpg',
+          '/new-images/Shoes/shoe-3.jpg',
+        ],
+        sizes: ['36', '37', '38', '39', '40', '41'],
+        colors: [
+          { name: 'Black', hex: '#000000' },
+          { name: 'Nude', hex: '#E3BC9A' },
+          { name: 'Red', hex: '#DC2626' },
+          { name: 'Navy', hex: '#000080' },
+        ],
+      },
+      'shoe-2': {
+        name: 'Designer High Heels',
+        price: 219000,
+        originalPrice: 289000,
+        discount: 24,
+        rating: 4.7,
+        reviewCount: 142,
+        category: "Women's Shoes",
+        brand: 'Clementine Classic',
+        description: 'Make a statement with these stunning designer high heels. Featuring a bold design, premium materials, and exceptional craftsmanship. These heels are designed to turn heads while providing all-day comfort.',
+        features: [
+          'Premium materials',
+          'Exceptional craftsmanship',
+          'Bold design',
+          'Comfortable fit',
+          'Quality sole',
+          'Stylish appeal',
+        ],
+        images: [
+          '/new-images/Shoes/shoe-2.jpg',
+          '/new-images/Shoes/shoe-4.jpg',
+          '/new-images/Shoes/shoe-5.jpg',
+        ],
+        sizes: ['36', '37', '38', '39', '40'],
+        colors: [
+          { name: 'Black', hex: '#000000' },
+          { name: 'Gold', hex: '#FFD700' },
+          { name: 'Silver', hex: '#C0C0C0' },
+        ],
+      },
+      // Wigs
+      'wig-1': {
+        name: 'Premium Human Hair Wig',
+        price: 349000,
+        originalPrice: 449000,
+        discount: 22,
+        rating: 4.9,
+        reviewCount: 98,
+        category: 'Wigs',
+        brand: 'Clementine Classic',
+        description: 'Experience the ultimate in wig luxury with our premium human hair collection. Made from 100% human hair, this wig offers natural movement, versatility, and can be styled, colored, and heat-treated just like your own hair.',
+        features: [
+          '100% Human Hair',
+          'Natural look and feel',
+          'Heat-stylable',
+          'Can be colored',
+          'Natural movement',
+          'Long-lasting quality',
+        ],
+        images: [
+          '/new-images/wigs/wig-1.jpg',
+          '/new-images/wigs/wig-2.jpg',
+        ],
+        sizes: ['One Size (Adjustable)'],
+        colors: [
+          { name: 'Natural Black', hex: '#1C1C1C' },
+          { name: 'Dark Brown', hex: '#3D2817' },
+          { name: 'Light Brown', hex: '#8B6914' },
+          { name: 'Blonde', hex: '#F5DEB3' },
+        ],
+      },
+      'wig-2': {
+        name: 'Luxury Synthetic Wig',
+        price: 229000,
+        originalPrice: 299000,
+        discount: 23,
+        rating: 4.4,
+        reviewCount: 167,
+        category: 'Wigs',
+        brand: 'Clementine Classic',
+        description: 'A high-quality synthetic wig that offers excellent value without compromising on style. Pre-styled and ready to wear, this wig maintains its shape beautifully and requires minimal maintenance.',
+        features: [
+          'Premium synthetic fibers',
+          'Pre-styled',
+          'Low maintenance',
+          'Natural appearance',
+          'Lightweight',
+          'Durable',
+        ],
+        images: [
+          '/new-images/wigs/wig-2.jpg',
+          '/new-images/wigs/wig-1.jpg',
+        ],
+        sizes: ['One Size (Adjustable)'],
+        colors: [
+          { name: 'Natural Black', hex: '#1C1C1C' },
+          { name: 'Brown', hex: '#654321' },
+          { name: 'Auburn', hex: '#A52A2A' },
+        ],
+      },
+      // More bag products
+      'bag-3': {
+        name: 'Luxury Crossbody Bag',
+        price: 139000,
+        originalPrice: 179000,
+        discount: 22,
+        rating: 4.5,
+        reviewCount: 112,
+        category: 'Handbag',
+        brand: 'Clementine Classic',
+        description: 'A stylish and practical crossbody bag perfect for hands-free convenience. Features a comfortable adjustable strap, secure closure, and compact design that holds all your essentials.',
+        features: [
+          'Adjustable crossbody strap',
+          'Secure closure',
+          'Compact design',
+          'Multiple pockets',
+          'Lightweight',
+          'Durable material',
+        ],
+        images: [
+          '/new-images/bag/bag-3.jpg',
+          '/new-images/bag/bag-4.jpg',
+          '/new-images/bag/bag-5.jpg',
+        ],
+        sizes: ['One Size'],
+        colors: [
+          { name: 'Black', hex: '#000000' },
+          { name: 'Brown', hex: '#8B4513' },
+          { name: 'Tan', hex: '#D2B48C' },
+        ],
+      },
+      'bag-4': {
+        name: 'Premium Shoulder Bag',
+        price: 169000,
+        originalPrice: 219000,
+        discount: 23,
+        rating: 4.6,
+        reviewCount: 95,
+        category: 'Handbag',
+        brand: 'Clementine Classic',
+        description: 'A versatile shoulder bag that seamlessly transitions from day to night. Made from premium materials with elegant detailing and practical organization features.',
+        features: [
+          'Premium materials',
+          'Shoulder strap included',
+          'Interior organization',
+          'Elegant design',
+          'Versatile styling',
+          'Quality craftsmanship',
+        ],
+        images: [
+          '/new-images/bag/bag-4.jpg',
+          '/new-images/bag/bag-1.jpg',
+          '/new-images/bag/bag-2.jpg',
+        ],
+        sizes: ['One Size'],
+        colors: [
+          { name: 'Black', hex: '#000000' },
+          { name: 'Navy', hex: '#000080' },
+          { name: 'Burgundy', hex: '#800020' },
+        ],
+      },
+      'bag-5': {
+        name: 'Stylish Clutch Bag',
+        price: 119000,
+        originalPrice: 149000,
+        discount: 20,
+        rating: 4.4,
+        reviewCount: 78,
+        category: 'Handbag',
+        brand: 'Clementine Classic',
+        description: 'An elegant clutch bag perfect for evening events and special occasions. Compact yet spacious enough for essentials, with sophisticated styling and premium finish.',
+        features: [
+          'Compact design',
+          'Elegant styling',
+          'Premium finish',
+          'Secure closure',
+          'Perfect for evening',
+          'Space for essentials',
+        ],
+        images: [
+          '/new-images/bag/bag-5.jpg',
+          '/new-images/bag/bag-1.jpg',
+          '/new-images/bag/bag-3.jpg',
+        ],
+        sizes: ['One Size'],
+        colors: [
+          { name: 'Black', hex: '#000000' },
+          { name: 'Gold', hex: '#FFD700' },
+          { name: 'Silver', hex: '#C0C0C0' },
+        ],
+      },
+      // More dress products
+      'dress-3': {
+        name: 'Designer Cocktail Dress',
+        price: 279000,
+        originalPrice: 359000,
+        discount: 22,
+        rating: 4.8,
+        reviewCount: 134,
+        category: "Women's Dress",
+        brand: 'Clementine Classic',
+        description: 'A stunning cocktail dress designed to make you stand out at any event. Featuring elegant details, flattering fit, and luxurious fabric that moves beautifully.',
+        features: [
+          'Luxurious fabric',
+          'Flattering fit',
+          'Elegant details',
+          'Perfect for parties',
+          'High-quality construction',
+          'Dry clean only',
+        ],
+        images: [
+          '/new-images/dress/dress-3.jpg',
+          '/new-images/dress/dress-4.jpg',
+          '/new-images/dress/dress-5.jpg',
+        ],
+        sizes: ['XS', 'S', 'M', 'L', 'XL'],
+        colors: [
+          { name: 'Black', hex: '#000000' },
+          { name: 'Red', hex: '#DC2626' },
+          { name: 'Navy', hex: '#000080' },
+        ],
+      },
+      'dress-4': {
+        name: 'Elegant Maxi Dress',
+        price: 219000,
+        originalPrice: 289000,
+        discount: 24,
+        rating: 4.7,
+        reviewCount: 178,
+        category: "Women's Dress",
+        brand: 'Clementine Classic',
+        description: 'Flow effortlessly in this elegant maxi dress. Perfect for summer events, beach weddings, or casual outings. Features a comfortable fit and beautiful drape.',
+        features: [
+          'Flowing maxi length',
+          'Comfortable fit',
+          'Beautiful drape',
+          'Breathable fabric',
+          'Versatile styling',
+          'Easy care',
+        ],
+        images: [
+          '/new-images/dress/dress-4.jpg',
+          '/new-images/dress/dress-6.jpg',
+          '/new-images/dress/dress-7.jpg',
+        ],
+        sizes: ['XS', 'S', 'M', 'L', 'XL'],
+        colors: [
+          { name: 'Floral Print', hex: '#FFB6C1' },
+          { name: 'Navy', hex: '#000080' },
+          { name: 'Black', hex: '#000000' },
+        ],
+      },
+      'dress-5': {
+        name: 'Chic Midi Dress',
+        price: 199000,
+        originalPrice: 259000,
+        discount: 23,
+        rating: 4.6,
+        reviewCount: 145,
+        category: "Women's Dress",
+        brand: 'Clementine Classic',
+        description: 'A versatile midi dress that works for both casual and semi-formal occasions. Modern design with classic appeal, perfect for any wardrobe.',
+        features: [
+          'Versatile midi length',
+          'Modern design',
+          'Classic appeal',
+          'Comfortable fabric',
+          'Easy to style',
+          'Machine washable',
+        ],
+        images: [
+          '/new-images/dress/dress-5.jpg',
+          '/new-images/dress/dress-8.jpg',
+          '/new-images/dress/dress-9.jpg',
+        ],
+        sizes: ['XS', 'S', 'M', 'L', 'XL'],
+        colors: [
+          { name: 'Black', hex: '#000000' },
+          { name: 'Blue', hex: '#2563EB' },
+          { name: 'Pink', hex: '#EC4899' },
+        ],
+      },
+      // More shoe products
+      'shoe-3': {
+        name: 'Elegant Stiletto Heels',
+        price: 199000,
+        originalPrice: 259000,
+        discount: 23,
+        rating: 4.5,
+        reviewCount: 163,
+        category: "Women's Shoes",
+        brand: 'Clementine Classic',
+        description: 'Classic stiletto heels that never go out of style. These elegant shoes feature a pointed toe, high heel, and premium materials for a sophisticated look.',
+        features: [
+          'Classic stiletto design',
+          'Pointed toe',
+          'High heel',
+          'Premium materials',
+          'Comfortable fit',
+          'Timeless elegance',
+        ],
+        images: [
+          '/new-images/Shoes/shoe-3.jpg',
+          '/new-images/Shoes/shoe-6.jpg',
+          '/new-images/Shoes/shoe-7.jpg',
+        ],
+        sizes: ['36', '37', '38', '39', '40', '41'],
+        colors: [
+          { name: 'Black', hex: '#000000' },
+          { name: 'Nude', hex: '#E3BC9A' },
+          { name: 'Red', hex: '#DC2626' },
+        ],
+      },
+      'shoe-4': {
+        name: 'Luxury Platform Heels',
+        price: 229000,
+        originalPrice: 299000,
+        discount: 23,
+        rating: 4.7,
+        reviewCount: 129,
+        category: "Women's Shoes",
+        brand: 'Clementine Classic',
+        description: 'Make a bold statement with these luxury platform heels. Featuring a chunky platform sole and high heel for added height and dramatic impact.',
+        features: [
+          'Platform sole',
+          'High heel',
+          'Bold design',
+          'Sturdy construction',
+          'Comfortable platform',
+          'Statement piece',
+        ],
+        images: [
+          '/new-images/Shoes/shoe-4.jpg',
+          '/new-images/Shoes/shoe-8.jpg',
+          '/new-images/Shoes/shoe-9.jpg',
+        ],
+        sizes: ['36', '37', '38', '39', '40'],
+        colors: [
+          { name: 'Black', hex: '#000000' },
+          { name: 'White', hex: '#FFFFFF' },
+          { name: 'Metallic', hex: '#C0C0C0' },
+        ],
+      },
+      'shoe-5': {
+        name: 'Chic Ankle Boots',
+        price: 249000,
+        originalPrice: 329000,
+        discount: 24,
+        rating: 4.6,
+        reviewCount: 198,
+        category: "Women's Shoes",
+        brand: 'Clementine Classic',
+        description: 'Stylish ankle boots perfect for cooler seasons. These chic boots combine fashion-forward design with comfort and durability.',
+        features: [
+          'Ankle height',
+          'Stylish design',
+          'Durable construction',
+          'Comfortable fit',
+          'Versatile styling',
+          'Quality materials',
+        ],
+        images: [
+          '/new-images/Shoes/shoe-5.jpg',
+          '/new-images/Shoes/shoe-10.jpg',
+          '/new-images/Shoes/shoe-11.jpg',
+        ],
+        sizes: ['36', '37', '38', '39', '40', '41'],
+        colors: [
+          { name: 'Black', hex: '#000000' },
+          { name: 'Brown', hex: '#8B4513' },
+          { name: 'Tan', hex: '#D2B48C' },
+        ],
+      },
+      // Additional products for completeness
+      'dress-6': {
+        name: 'Luxury Ball Gown',
+        price: 349000,
+        originalPrice: 449000,
+        discount: 22,
+        rating: 4.8,
+        reviewCount: 112,
+        category: "Women's Dress",
+        brand: 'Clementine Classic',
+        description: 'An exquisite ball gown perfect for formal events and galas. Featuring luxurious fabric, elegant design, and impeccable tailoring for a truly regal appearance.',
+        features: [
+          'Luxurious fabric',
+          'Elegant design',
+          'Impeccable tailoring',
+          'Perfect for formal events',
+          'Regal appearance',
+          'Dry clean only',
+        ],
+        images: ['/new-images/dress/dress-6.jpg', '/new-images/dress/dress-7.jpg', '/new-images/dress/dress-8.jpg'],
+        sizes: ['XS', 'S', 'M', 'L', 'XL'],
+        colors: [
+          { name: 'Black', hex: '#000000' },
+          { name: 'Navy', hex: '#000080' },
+          { name: 'Burgundy', hex: '#800020' },
+        ],
+      },
+      'dress-7': {
+        name: 'Stylish Casual Dress',
+        price: 169000,
+        originalPrice: 219000,
+        discount: 23,
+        rating: 4.5,
+        reviewCount: 189,
+        category: "Women's Dress",
+        brand: 'Clementine Classic',
+        description: 'A comfortable and stylish casual dress perfect for everyday wear. Easy to care for and versatile enough to dress up or down for any occasion.',
+        features: [
+          'Comfortable fit',
+          'Everyday wear',
+          'Easy care',
+          'Versatile styling',
+          'Breathable fabric',
+          'Machine washable',
+        ],
+        images: ['/new-images/dress/dress-7.jpg', '/new-images/dress/dress-9.jpg', '/new-images/dress/dress-10.jpg'],
+        sizes: ['XS', 'S', 'M', 'L', 'XL'],
+        colors: [
+          { name: 'Black', hex: '#000000' },
+          { name: 'Blue', hex: '#2563EB' },
+          { name: 'Pink', hex: '#EC4899' },
+        ],
+      },
+      'shoe-6': {
+        name: 'Designer Pumps',
+        price: 179000,
+        originalPrice: 239000,
+        discount: 25,
+        rating: 4.6,
+        reviewCount: 203,
+        category: "Women's Shoes",
+        brand: 'Clementine Classic',
+        description: 'Classic designer pumps that never go out of style. These timeless shoes offer comfort and sophistication for any professional or formal setting.',
+        features: [
+          'Classic design',
+          'Professional style',
+          'Comfortable fit',
+          'Quality materials',
+          'Timeless appeal',
+          'Durable construction',
+        ],
+        images: ['/new-images/Shoes/shoe-6.jpg', '/new-images/Shoes/shoe-12.jpg', '/new-images/Shoes/shoe-13.jpg'],
+        sizes: ['36', '37', '38', '39', '40', '41'],
+        colors: [
+          { name: 'Black', hex: '#000000' },
+          { name: 'Nude', hex: '#E3BC9A' },
+          { name: 'Navy', hex: '#000080' },
+        ],
+      },
+      'shoe-7': {
+        name: 'Elegant Wedge Heels',
+        price: 209000,
+        originalPrice: 269000,
+        discount: 22,
+        rating: 4.5,
+        reviewCount: 156,
+        category: "Women's Shoes",
+        brand: 'Clementine Classic',
+        description: 'Comfortable yet stylish wedge heels that provide height without compromising on comfort. Perfect for long events where you want to look great and feel comfortable.',
+        features: [
+          'Wedge design',
+          'Comfortable heel',
+          'Stable platform',
+          'Stylish appearance',
+          'Quality materials',
+          'All-day comfort',
+        ],
+        images: ['/new-images/Shoes/shoe-7.jpg', '/new-images/Shoes/shoe-14.jpg', '/new-images/Shoes/shoe-15.jpg'],
+        sizes: ['36', '37', '38', '39', '40'],
+        colors: [
+          { name: 'Black', hex: '#000000' },
+          { name: 'Beige', hex: '#F5F5DC' },
+          { name: 'Brown', hex: '#8B4513' },
+        ],
+      },
+    };
+
+    // Default product if ID not found
+    const defaultProduct: ProductData = {
+      name: 'Premium Product',
+      price: 199000,
+      originalPrice: 259000,
+      discount: 23,
+      rating: 4.5,
+      reviewCount: 100,
+      category: "Women's Collection",
+      brand: 'Clementine Classic',
+      description: 'A premium quality product crafted with attention to detail and superior materials.',
+      features: ['Premium quality', 'Durable', 'Stylish design'],
+      images: ['/new-images/dress/dress-1.jpg'],
+      sizes: ['S', 'M', 'L'],
+      colors: [{ name: 'Black', hex: '#000000' }],
+    };
+
+    return productDatabase[productId] || defaultProduct;
   };
 
-  const relatedProducts = Array.from({ length: 4 }, (_, i) => ({
-    id: `${i + 100}`,
-    title: `Related Product ${i + 1}`,
-    category: "Women's Collection",
-    price: `Rwf ${(89 + i * 10) * 1000}`,
-    originalPrice: `Rwf ${(119 + i * 10) * 1000}`,
-    discount: '25%',
-    image: '/images/products/product-img-1.jpg',
-  }));
+  const productData = getProductData(id);
+  const product = {
+    id,
+    ...productData,
+    inStock: true,
+  };
+
+  // Related products based on category
+  interface RelatedProduct {
+    id: string;
+    title: string;
+    category: string;
+    price: string;
+    originalPrice: string;
+    discount: string;
+    image: string;
+  }
+
+  const getRelatedProducts = (category: string, currentId: string): RelatedProduct[] => {
+    const allProducts: Record<string, RelatedProduct[]> = {
+      'Handbag': [
+        { id: 'bag-1', title: 'Elegant Leather Handbag', category: 'Handbag', price: 'Rwf 159,000', originalPrice: 'Rwf 199,000', discount: '20%', image: '/new-images/bag/bag-1.jpg' },
+        { id: 'bag-2', title: 'Designer Tote Bag', category: 'Handbag', price: 'Rwf 179,000', originalPrice: 'Rwf 229,000', discount: '22%', image: '/new-images/bag/bag-2.jpg' },
+        { id: 'bag-3', title: 'Luxury Crossbody Bag', category: 'Handbag', price: 'Rwf 139,000', originalPrice: 'Rwf 179,000', discount: '22%', image: '/new-images/bag/bag-3.jpg' },
+        { id: 'bag-4', title: 'Premium Shoulder Bag', category: 'Handbag', price: 'Rwf 169,000', originalPrice: 'Rwf 219,000', discount: '23%', image: '/new-images/bag/bag-4.jpg' },
+      ],
+      "Women's Dress": [
+        { id: 'dress-1', title: 'Elegant Evening Gown', category: "Women's Dress", price: 'Rwf 249,000', originalPrice: 'Rwf 329,000', discount: '24%', image: '/new-images/dress/dress-1.jpg' },
+        { id: 'dress-2', title: 'Classic A-Line Dress', category: "Women's Dress", price: 'Rwf 189,000', originalPrice: 'Rwf 249,000', discount: '24%', image: '/new-images/dress/dress-2.jpg' },
+        { id: 'dress-3', title: 'Designer Cocktail Dress', category: "Women's Dress", price: 'Rwf 279,000', originalPrice: 'Rwf 359,000', discount: '22%', image: '/new-images/dress/dress-3.jpg' },
+        { id: 'dress-4', title: 'Elegant Maxi Dress', category: "Women's Dress", price: 'Rwf 219,000', originalPrice: 'Rwf 289,000', discount: '24%', image: '/new-images/dress/dress-4.jpg' },
+      ],
+      "Women's Shoes": [
+        { id: 'shoe-1', title: 'Premium Leather Heels', category: "Women's Shoes", price: 'Rwf 189,000', originalPrice: 'Rwf 249,000', discount: '24%', image: '/new-images/Shoes/shoe-1.jpg' },
+        { id: 'shoe-2', title: 'Designer High Heels', category: "Women's Shoes", price: 'Rwf 219,000', originalPrice: 'Rwf 289,000', discount: '24%', image: '/new-images/Shoes/shoe-2.jpg' },
+        { id: 'shoe-3', title: 'Elegant Stiletto Heels', category: "Women's Shoes", price: 'Rwf 199,000', originalPrice: 'Rwf 259,000', discount: '23%', image: '/new-images/Shoes/shoe-3.jpg' },
+        { id: 'shoe-4', title: 'Luxury Platform Heels', category: "Women's Shoes", price: 'Rwf 229,000', originalPrice: 'Rwf 299,000', discount: '23%', image: '/new-images/Shoes/shoe-4.jpg' },
+      ],
+      'Wigs': [
+        { id: 'wig-1', title: 'Premium Human Hair Wig', category: 'Wigs', price: 'Rwf 349,000', originalPrice: 'Rwf 449,000', discount: '22%', image: '/new-images/wigs/wig-1.jpg' },
+        { id: 'wig-2', title: 'Luxury Synthetic Wig', category: 'Wigs', price: 'Rwf 229,000', originalPrice: 'Rwf 299,000', discount: '23%', image: '/new-images/wigs/wig-2.jpg' },
+        { id: 'bag-1', title: 'Elegant Leather Handbag', category: 'Handbag', price: 'Rwf 159,000', originalPrice: 'Rwf 199,000', discount: '20%', image: '/new-images/bag/bag-1.jpg' },
+        { id: 'dress-1', title: 'Elegant Evening Gown', category: "Women's Dress", price: 'Rwf 249,000', originalPrice: 'Rwf 329,000', discount: '24%', image: '/new-images/dress/dress-1.jpg' },
+      ],
+    };
+
+    const categoryProducts = allProducts[category] || allProducts["Women's Dress"];
+    return categoryProducts.filter(p => p.id !== currentId).slice(0, 4);
+  };
+
+  const relatedProducts = getRelatedProducts(product.category, id);
 
   const reviews = [
     {
@@ -194,7 +867,7 @@ export default function ProductPage({ params }: ProductPageProps) {
                 )}
               </div>
               <div className="grid grid-cols-4 gap-4">
-                {product.images.map((image, index) => (
+                {product.images.map((image: string, index: number) => (
                   <button
                     key={index}
                     onClick={() => setSelectedImage(index)}
@@ -268,7 +941,7 @@ export default function ProductPage({ params }: ProductPageProps) {
                   Color: {selectedColor && <span className="text-accent-rose">{selectedColor}</span>}
                 </label>
                 <div className="flex gap-3">
-                  {product.colors.map((color) => (
+                  {product.colors.map((color: { name: string; hex: string }) => (
                     <button
                       key={color.name}
                       onClick={() => setSelectedColor(color.name)}
@@ -290,7 +963,7 @@ export default function ProductPage({ params }: ProductPageProps) {
                   Size: {selectedSize && <span className="text-accent-rose">{selectedSize}</span>}
                 </label>
                 <div className="flex flex-wrap gap-2">
-                  {product.sizes.map((size) => (
+                  {product.sizes.map((size: string) => (
                     <Button
                       key={size}
                       variant={selectedSize === size ? 'default' : 'outline'}
@@ -389,9 +1062,9 @@ export default function ProductPage({ params }: ProductPageProps) {
                 <p className="text-muted-foreground mb-6">{product.description}</p>
                 <h4 className="text-lg font-semibold mb-3">Key Features:</h4>
                 <ul className="space-y-2">
-                  {product.features.map((feature, index) => (
+                  {product.features.map((feature: string, index: number) => (
                     <li key={index} className="flex items-start gap-2">
-                      <Check className="h-5 w-5 text-accent-rose flex-shrink-0 mt-0.5" />
+                      <Check className="h-5 w-5 text-accent-rose shrink-0 mt-0.5" />
                       <span>{feature}</span>
                     </li>
                   ))}
@@ -468,7 +1141,7 @@ export default function ProductPage({ params }: ProductPageProps) {
           <div>
             <h2 className="text-3xl font-serif mb-8 text-center">You May Also Like</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              {relatedProducts.map((product) => (
+              {relatedProducts.map((product: RelatedProduct) => (
                 <ProductCard key={product.id} {...product} href={`/shop/${product.id}`} />
               ))}
             </div>

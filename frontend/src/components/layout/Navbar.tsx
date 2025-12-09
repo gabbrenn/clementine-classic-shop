@@ -14,8 +14,9 @@ export function Navbar() {
   const [isScrolled, setIsScrolled] = React.useState(false);
   const [searchOpen, setSearchOpen] = React.useState(false);
   const items = useCartStore((state) => state.items);
-  const { isAuthenticated } = useAuthStore();
+  const { isAuthenticated, user } = useAuthStore();
   const cartItemCount = items.reduce((total, item) => total + item.quantity, 0);
+  const isAdmin = user?.role === 'ADMIN' || user?.role === 'SUPER_ADMIN';
 
   React.useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 20);
@@ -89,6 +90,14 @@ export function Navbar() {
             >
               ABOUT
             </Link>
+            {isAdmin && (
+              <Link
+                href="/admin"
+                className="text-sm font-medium hover:text-accent-rose transition-luxury"
+              >
+                ADMIN
+              </Link>
+            )}
           </div>
 
           {/* Actions */}
@@ -101,7 +110,7 @@ export function Navbar() {
             >
               <Search className="h-5 w-5" />
             </Button>
-            <Link href={isAuthenticated ? '/account' : '/login'}>
+            <Link href={isAuthenticated ? (isAdmin ? '/admin' : '/account') : '/login'}>
               <Button variant="ghost" size="icon">
                 <User className="h-5 w-5" />
               </Button>
@@ -188,6 +197,15 @@ export function Navbar() {
                     <span className="text-base font-medium">About</span>
                     <span className="text-accent-rose opacity-0 group-hover:opacity-100 transition-opacity">→</span>
                   </Link>
+                  {isAdmin && (
+                    <Link
+                      href="/admin"
+                      className="group flex items-center justify-between px-4 py-3 rounded-lg hover:bg-accent-rose-subtle/30 transition-all"
+                    >
+                      <span className="text-base font-medium">Admin Dashboard</span>
+                      <span className="text-accent-rose opacity-0 group-hover:opacity-100 transition-opacity">→</span>
+                    </Link>
+                  )}
                 </nav>
 
                 {/* Divider */}
@@ -196,15 +214,15 @@ export function Navbar() {
                 {/* Quick Actions */}
                 <div className="space-y-3">
                   <Link
-                    href="/account"
+                    href={isAdmin ? '/admin' : '/account'}
                     className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-accent-rose-subtle/20 transition-all"
                   >
                     <div className="h-10 w-10 rounded-full bg-accent-rose-subtle/40 flex items-center justify-center">
                       <User className="h-5 w-5 text-accent-rose" />
                     </div>
                     <div>
-                      <p className="text-sm font-medium">My Account</p>
-                      <p className="text-xs text-muted-foreground">Profile & Orders</p>
+                      <p className="text-sm font-medium">{isAdmin ? 'Admin Dashboard' : 'My Account'}</p>
+                      <p className="text-xs text-muted-foreground">{isAdmin ? 'Manage Store' : 'Profile & Orders'}</p>
                     </div>
                   </Link>
                   <Link

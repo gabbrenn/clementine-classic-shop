@@ -10,7 +10,7 @@ import { Navbar } from '@/components/layout/Navbar';
 import { Footer } from '@/components/layout/Footer';
 import { HeroBanner } from '@/components/sections/HeroBanner';
 import { ProductCard } from '@/components/products/ProductCard';
-import { CategoryCard } from '@/components/products/CategoryCard';
+import { CategoryCardV2 } from '@/components/products/CategoryCardV2';
 import { NewsletterSection } from '@/components/sections/NewsletterSection';
 import { CountdownTimer } from '@/components/sections/CountdownTimer';
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -29,105 +29,102 @@ export default function Home() {
     return date;
   });
 
-  // Sample product data
+  // Product data matching actual images
   const featuredProducts = [
     {
-      id: '1',
-      title: 'Orange Airsuit',
-      category: 'Fashion Bag',
-      price: 'Rwf 98,000',
-      originalPrice: 'Rwf 129,000',
-      discount: '24%',
-      image: '/images/products/product-img-1.jpg',
-    },
-    {
-      id: '2',
-      title: 'Classic Elegant Dress',
-      category: "Women's Collection",
-      price: 'Rwf 99,000',
-      originalPrice: 'Rwf 149,000',
-      discount: '25%',
-      image: '/images/products/product-img-2.jpg',
-    },
-    {
-      id: '3',
-      title: 'Premium Leather Handbag',
-      category: 'Accessories',
-      price: 'Rwf 199,000',
-      originalPrice: 'Rwf 249,000',
-      discount: '20%',
-      image: '/images/products/product-img-3.jpg',
-    },
-    {
-      id: '4',
-      title: 'Designer Sunglasses',
-      category: 'Accessories',
-      price: 'Rwf 149,000',
+      id: 'bag-1',
+      title: 'Elegant Leather Handbag',
+      category: 'Handbag',
+      price: 'Rwf 159,000',
       originalPrice: 'Rwf 199,000',
-      discount: '25%',
-      image: '/images/products/product-img-4.jpg',
-    },
-    {
-      id: '5',
-      title: 'Luxury Watch',
-      category: 'Watches',
-      price: 'Rwf 599,000',
-      originalPrice: 'Rwf 799,000',
-      discount: '25%',
-      image: '/images/products/product-img-5.jpg',
-    },
-    {
-      id: '6',
-      title: 'Silk Scarf',
-      category: 'Accessories',
-      price: 'Rwf 79,000',
-      originalPrice: 'Rwf 99,000',
       discount: '20%',
-      image: '/images/products/product-img-1.jpg',
+      image: '/new-images/bag/bag-1.jpg',
+    },
+    {
+      id: 'dress-1',
+      title: 'Elegant Evening Gown',
+      category: "Women's Dress",
+      price: 'Rwf 249,000',
+      originalPrice: 'Rwf 329,000',
+      discount: '24%',
+      image: '/new-images/dress/dress-1.jpg',
+    },
+    {
+      id: 'bag-2',
+      title: 'Designer Tote Bag',
+      category: 'Handbag',
+      price: 'Rwf 179,000',
+      originalPrice: 'Rwf 229,000',
+      discount: '22%',
+      image: '/new-images/bag/bag-2.jpg',
+    },
+    {
+      id: 'dress-2',
+      title: 'Classic A-Line Dress',
+      category: "Women's Dress",
+      price: 'Rwf 189,000',
+      originalPrice: 'Rwf 249,000',
+      discount: '24%',
+      image: '/new-images/dress/dress-2.jpg',
+    },
+    {
+      id: 'shoe-1',
+      title: 'Premium Leather Heels',
+      category: "Women's Shoes",
+      price: 'Rwf 189,000',
+      originalPrice: 'Rwf 249,000',
+      discount: '24%',
+      image: '/new-images/Shoes/shoe-1.jpg',
+    },
+    {
+      id: 'dress-3',
+      title: 'Designer Cocktail Dress',
+      category: "Women's Dress",
+      price: 'Rwf 279,000',
+      originalPrice: 'Rwf 359,000',
+      discount: '22%',
+      image: '/new-images/dress/dress-3.jpg',
     },
   ];
 
   const categories = [
-    { id: '1', title: 'Men', href: '/shop?category=men', image: '/images/categories/category-1.jpg' },
-    { id: '2', title: 'Kids', href: '/shop?category=kids', image: '/images/categories/category-2.jpg' },
-    { id: '3', title: 'Pants', href: '/shop?category=pants', image: '/images/categories/category-3.jpg' },
-    { id: '4', title: 'Women', href: '/shop?category=women', image: '/images/categories/category-4.jpg' },
-    { id: '5', title: 'Jeans', href: '/shop?category=jeans', image: '/images/categories/category-5.jpg' },
-    { id: '6', title: 'Sweater', href: '/shop?category=sweater', image: '/images/categories/category-6.jpg' },
-    { id: '7', title: 'Shoes', href: '/shop?category=shoes', image: '/images/categories/category-7.jpg' },
+    { id: '1', title: 'Women', href: '/shop?category=women', image: '/new-images/dress/dress-1.jpg' },
+    { id: '2', title: 'Handbag', href: '/shop?category=handbag', image: '/new-images/bag/bag-5.jpg' },
+    { id: '3', title: 'Wigs', href: '/shop?category=wigs', image: '/new-images/wigs/wig-2.jpg' },
+    { id: '4', title: 'Shoes', href: '/shop?category=shoes', image: '/new-images/Shoes/shoe-18.jpg' },
   ];
 
   const mostSellingProducts = [
     {
-      id: '7',
-      title: 'Elegant Evening Gown',
-      category: "Women's Collection",
-      price: 'Rwf 299,000',
-      image: '/images/products/product-img-sm-1.jpg',
+      id: 'dress-4',
+      title: 'Elegant Mid Dress',
+      category: "Women's Dress",
+      price: 'Rwf 219,000',
+      image: '/new-images/dress/dress-4.jpg',
       rating: 5,
     },
     {
-      id: '8',
-      title: 'Classic Suit',
-      category: "Men's Collection",
-      price: 'Rwf 399,000',
-      image: '/images/products/product-img-sm-2.jpg',
+      id: 'dress-5',
+      title: 'Chic Max Dress',
+      category: "Women's Dress",
+      price: 'Rwf 199,000',
+      image: '/new-images/dress/dress-5.jpg',
       rating: 5,
     },
     {
-      id: '9',
-      title: 'Designer Heels',
-      category: 'Footwear',
-      price: 'Rwf 179,000',
-      image: '/images/products/product-img-sm-3.jpg',
+      id: 'shoe-2',
+      title: 'Designer High Heels',
+      category: "Women's Shoes",
+      price: 'Rwf 219,000',
+      image: '/new-images/Shoes/shoe-2.jpg',
       rating: 4,
     },
     {
-      id: '10',
-      title: 'Luxury Jewelry Set',
-      category: 'Jewellery',
-      price: 'Rwf 499,000',
-      image: '/images/products/product-img-sm-4.jpg',
+      id: 'bag-3',
+      title: 'Luxury Crossbody Bag',
+      category: 'Handbag',
+      price: 'Rwf 139,000',
+      image: '/new-images/bag/bag-3.jpg',
       rating: 5,
     },
   ];
@@ -141,29 +138,29 @@ export default function Home() {
         slides={[
           {
             subtitle: 'New Arrival',
-            title: 'Timeless Elegance for Every Occasion',
+            title: 'Step into Style with Our Premium Shoes Collection',
             description: 'Starting From',
             ctaText: 'SHOP NOW',
             ctaLink: '/shop',
-            image: 'https://images.unsplash.com/photo-1490481651871-ab68de25d43d?q=80&w=2070&auto=format&fit=crop',
+            image: '/new-images/hero-1.jpg',
             gradient: 'from-accent-rose-subtle via-accent-rose-muted to-accent-rose-subtle',
           },
           {
             subtitle: 'Perfect for Summer Evenings',
-            title: 'Casual and Stylish for All Seasons',
+            title: 'Elegant Dresses for Every Beautiful Moment',
             description: 'Starting From',
             ctaText: 'EXPLORE COLLECTION',
             ctaLink: '/shop',
-            image: 'https://images.unsplash.com/photo-1483985988355-763728e1935b?q=80&w=2070&auto=format&fit=crop',
+            image: '/new-images/hero-4.jpg',
             gradient: 'from-purple-100 via-pink-100 to-rose-100',
           },
           {
             subtitle: 'Limited Edition',
-            title: 'Luxury Meets Contemporary Design',
+            title: 'Transform Your Look with Stunning Wigs',
             description: 'Starting From',
             ctaText: 'DISCOVER MORE',
             ctaLink: '/shop',
-            image: 'https://images.unsplash.com/photo-1469334031218-e382a71b716b?q=80&w=2070&auto=format&fit=crop',
+            image: '/new-images/hero-3.jpg',
             gradient: 'from-blue-100 via-indigo-100 to-purple-100',
           },
         ]}
@@ -173,27 +170,79 @@ export default function Home() {
       {/* Categories Section */}
       <section className="py-16 md:py-20 bg-background">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-4 md:gap-6">
-            {categories.map((category) => (
-              <CategoryCard
-                key={category.id}
-                title={category.title}
-                href={category.href}
-                image={category.image}
-              />
-            ))}
+          {/* Section Header */}
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-12">
+            <div className="mb-6 md:mb-0">
+              <span className="inline-flex items-center gap-2 text-sm font-medium text-accent-rose uppercase tracking-wider mb-3 px-4 py-1.5 bg-accent-rose-subtle/50 rounded-full">
+                <Star className="h-3.5 w-3.5 fill-accent-rose" />
+                Categories
+              </span>
+              <h2 className="text-3xl md:text-4xl lg:text-5xl font-serif mb-2">
+                Explore Our All Categories
+              </h2>
+              <p className="text-muted-foreground max-w-xl">
+                Discover our wide range of fashion categories to find your perfect style
+              </p>
+            </div>
+          </div>
+
+          <div className="relative">
+            <Swiper
+              modules={[Autoplay]}
+              spaceBetween={16}
+              slidesPerView={2}
+              breakpoints={{
+                640: {
+                  slidesPerView: 2,
+                  spaceBetween: 20,
+                },
+                1024: {
+                  slidesPerView: 4,
+                  spaceBetween: 16,
+                },
+              }}
+              autoplay={{
+                delay: 2500,
+                disableOnInteraction: false,
+                pauseOnMouseEnter: false,
+              }}
+              loop={true}
+              loopAdditionalSlides={4}
+              speed={800}
+              className="!pb-12"
+            >
+              {categories.map((category) => (
+                <SwiperSlide key={category.id}>
+                  <CategoryCardV2
+                    title={category.title}
+                    href={category.href}
+                    image={category.image}
+                  />
+                </SwiperSlide>
+              ))}
+              {/* Duplicate slides for seamless continuous loop */}
+              {categories.map((category) => (
+                <SwiperSlide key={`dup-${category.id}`}>
+                  <CategoryCardV2
+                    title={category.title}
+                    href={category.href}
+                    image={category.image}
+                  />
+                </SwiperSlide>
+              ))}
+            </Swiper>
           </div>
         </div>
       </section>
 
       {/* Featured Products Section */}
-      <section className="py-16 md:py-20 bg-gradient-to-b from-background via-accent-rose-subtle/20 to-background relative overflow-hidden">
+      <section className="bg-gradient-to-b from-background via-accent-rose-subtle/20 to-background relative overflow-hidden">
         {/* Decorative background elements */}
         <div className="absolute inset-0 opacity-5">
           <div className="absolute top-0 left-0 w-96 h-96 bg-accent-rose rounded-full blur-3xl"></div>
           <div className="absolute bottom-0 right-0 w-96 h-96 bg-accent-rose-muted rounded-full blur-3xl"></div>
-        </div>
-
+            </div>
+            
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-12">
             <div className="mb-6 md:mb-0">
@@ -206,13 +255,13 @@ export default function Home() {
               </h2>
               <p className="text-muted-foreground max-w-xl">
                 Discover our curated selection of premium fashion pieces
-              </p>
+            </p>
             </div>
             <div className="flex items-center">
               <Link href="/shop">
                 <Button size="lg" className="bg-accent-rose hover:bg-accent-rose-dark text-white">
                   More Collection
-                  <ArrowRight className="ml-2 h-4 w-4" />
+                <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
               </Link>
             </div>
@@ -281,11 +330,11 @@ export default function Home() {
                   Trending Products
                 </span>
                 <h2 className="text-2xl md:text-3xl lg:text-4xl font-serif">
-                  Get 30% Discount On All Hudis!
+                  Get Discount On Our Products!
                 </h2>
                 
                 <div className="flex flex-wrap gap-3 justify-center md:justify-start">
-                  {['Zara', 'Gucci', 'Publo', "Men's", "Women's"].map((brand) => (
+                  {['Dress', "Wigs", "Handbag", "Shoes"].map((brand) => (
                     <span
                       key={brand}
                       className="inline-flex items-center gap-2 px-3 py-1.5 bg-card rounded-full text-xs md:text-sm border"
@@ -300,22 +349,22 @@ export default function Home() {
                   <Button size="lg" className="bg-accent-rose hover:bg-accent-rose-dark text-white mt-4">
                     Check Discount
                     <ArrowRight className="ml-2 h-4 w-4" />
-                  </Button>
+                    </Button>
                 </Link>
               </div>
 
               {/* Right Image - Touching Bottom */}
               <div className="relative h-[200px] md:h-[250px] rounded-lg overflow-hidden self-end">
                 <Image
-                  src="/images/other/ad-img.png"
+                  src="/new-images/png/bag-1.png"
                   alt="Discount Offer"
                   fill
                   className="object-contain object-bottom"
                   sizes="(max-width: 768px) 100vw, 50vw"
                 />
-              </div>
-            </div>
-          </Card>
+                  </div>
+                </div>
+              </Card>
         </div>
       </section>
 

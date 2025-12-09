@@ -7,16 +7,27 @@ export const errorHandler = (
   res: Response,
   next: NextFunction
 ) => {
+  const statusCode = res.statusCode !== 200 ? res.statusCode : 500;
+  
+  // Console log for better visibility in development
+  console.error('\n🔴 ERROR OCCURRED:');
+  console.error(`Method: ${req.method} ${req.url}`);
+  console.error(`Status: ${statusCode}`);
+  console.error(`Message: ${err.message}`);
+  if (process.env.NODE_ENV === 'development') {
+    console.error('Stack:', err.stack);
+  }
+  console.error('');
+  
   logger.error({
     err,
     req: {
       method: req.method,
       url: req.url,
-      headers: req.headers,
+      body: req.body,
+      query: req.query,
     },
   });
-
-  const statusCode = res.statusCode !== 200 ? res.statusCode : 500;
   
   res.status(statusCode).json({
     success: false,
